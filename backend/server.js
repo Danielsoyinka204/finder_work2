@@ -3,7 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { CohereClientV2 } from "cohere-ai";
 import path from "path";
-import job from "./cron/cron";
+import job from "./cron/cron.js";
 
 dotenv.config();
 
@@ -46,7 +46,7 @@ Instagram URL: ${instagramUrl}
 Hashtags: ${hashtags}
 
 Please assign a credibility score between 1 and 100 based on the provided information. The score should accurately reflect the overall trustworthiness of the business, considering factors like the professionalism of the website, security (SSL), contact details, and online presence. 
-Provide a clear explanation for the score in a few sentences (max 30 words), ensuring the explanation is consistent with the assigned score. For example:
+Provide a clear explanation for the score in a few sentences (max 30 words),score and credibilty score should be same keep in mind this point, with the assigned score. For example:
 - If the score is low (e.g., below 40), explain why, such as missing important security certificates, poor customer reviews, or incomplete business information.
 - If the score is high (e.g., above 80), explain the positive factors such as a secure website, active customer engagement, and a strong online reputation.
 Additionally, provide relevant business reviews or comments (max 20 words) to support the score.
@@ -80,7 +80,7 @@ Additionally, provide relevant business reviews or comments (max 20 words) to su
   }
 });
 
-if (process.env.ENV === "pro") {
+if (process.env.ENV === "production") {
   app.use(express.static(path.join(__dirname, "/frontend/dist")));
 
   app.get("*", (req, res) =>
