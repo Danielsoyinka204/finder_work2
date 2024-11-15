@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios'; 
+import axios from 'axios';
 
 const Form = () => {
   const [formData, setFormData] = useState({
@@ -15,8 +15,8 @@ const Form = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState(null); 
-  const [error, setError] = useState(null); 
+  const [response, setResponse] = useState(null);
+  const [error, setError] = useState(null);
 
   // Handle form data changes
   const handleChange = (e) => {
@@ -31,26 +31,25 @@ const Form = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null); 
+    setError(null);
 
     try {
-      const res = await axios.post('http://localhost:5000/analyze', formData); 
-      setResponse(res.data); 
-      console.log('response is', res.data);
+      const res = await axios.post('http://localhost:5000/analyze', formData);
+      setResponse(res.data);
+      console.log('response is ',res.data)
     } catch (err) {
-      setError('Something went wrong, please try again later!'); 
+      setError('Something went wrong, please try again later!');
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
-
 
   const handleCloseModal = () => {
     setResponse(null);
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 " id='form'>
       <form onSubmit={handleSubmit} className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-md space-y-6">
         <h2 className="text-4xl font-bold text-gray-800 text-center">See Your Business Credibility</h2>
 
@@ -65,7 +64,7 @@ const Form = () => {
               onChange={handleChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1')}`}
-              required={field !== 'email'} 
+              required={field !== 'email'}
             />
           </div>
         ))}
@@ -78,7 +77,6 @@ const Form = () => {
           {loading ? 'Processing...' : 'See Credibility'}
         </button>
 
-        
         {error && (
           <div className="mt-6 p-4 bg-red-100 text-red-800 rounded-md">
             <p>{error}</p>
@@ -86,7 +84,6 @@ const Form = () => {
         )}
       </form>
 
-     
       {response && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
           <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
@@ -95,7 +92,12 @@ const Form = () => {
               {response?.score ? `Score: ${response.score}` : 'No score available'}
             </p>
             <p className="mt-2 text-gray-600">
-              {response?.analysis?.text || 'No analysis found'}
+              {response?.analysis || 'No analysis found'}
+            </p>
+            <p
+              className={`mt-2 text-xl font-bold ${response?.legitimacy === "scam" ? "text-red-600" : "text-green-600"}`}
+            >
+              {response?.legitimacy === "scam" ? "SCAM" : "LEGITIMATE"}
             </p>
             <button
               onClick={handleCloseModal}

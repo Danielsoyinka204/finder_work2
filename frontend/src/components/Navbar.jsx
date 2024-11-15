@@ -12,7 +12,9 @@ const Navbar = () => {
                 <p  className='cursor-pointer hover:text-gray-400' >Contact</p>
             </div>
 
-            <button  className='bg-white text-black px-4 py-2 rounded-md font-bold border-none outline-none hover:bg-gray-400'  >Login</button>
+            <button  className='bg-white text-black px-4 py-2 rounded-md font-bold border-none outline-none hover:bg-gray-400'  >
+              <a  href='#form' >Fill Form</a>
+            </button>
         </div>
     </div>
   )
