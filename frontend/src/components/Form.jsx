@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // Simple URL validation regex pattern
 const isValidUrl = (url) => {
-  const urlPattern = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z0-9-]+(\/[a-z0-9-_]*)*$/i;
+  const urlPattern = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,}(:\d+)?(\/.*)?$/i;
   return urlPattern.test(url);
 };
 
@@ -32,10 +32,9 @@ const Form = () => {
     });
   };
 
-  // Normalize the domain (remove any `https://` added by the user)
   const handleDomainChange = (e) => {
     let value = e.target.value;
-    // Remove any 'https://' and 'http://'
+
     value = value.replace(/^https?:\/\//, '').replace(/^www\./, '');
     setFormData({
       ...formData,
@@ -43,7 +42,6 @@ const Form = () => {
     });
   };
 
-  // Validate input data before sending to backend
   const validateInputs = () => {
     if (!formData.businessName || !formData.domain || !isValidUrl(formData.domain)) {
       setError('Please provide a valid business name and domain.');
@@ -74,7 +72,7 @@ const Form = () => {
     setLoading(true);
     setError(null);
 
-    // Validate inputs before making the API call
+   
     if (!validateInputs()) {
       setLoading(false);
       return;
@@ -119,7 +117,7 @@ const Form = () => {
           </div>
         ))}
 
-        {/* Domain Input with Split for https:// */}
+
         <div className="space-y-1">
           <label className="block text-gray-700 capitalize">Domain (e.g., domainname.com)</label>
           <div className="flex">

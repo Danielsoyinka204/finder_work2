@@ -1,7 +1,7 @@
 import cron from "cron";
 import https from "https";
 
-const URL = process.env.WEB_URL;
+const URL = 'https://finder-work2.onrender.com/';
 
 const job = new cron.CronJob("*/14 * * * *", function () {
 	https
