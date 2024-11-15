@@ -25,7 +25,6 @@ app.post("/analyze", async (req, res) => {
     const {
       businessName,
       domain,
-      sslStatus,
       email,
       phone,
       address,
@@ -38,7 +37,6 @@ app.post("/analyze", async (req, res) => {
     Assess the credibility of a business based on these details:
     Business Name: ${businessName}
     Domain: ${domain}
-    SSL Status: ${sslStatus}
     Email: ${email}
     Phone: ${phone}
     Address: ${address}

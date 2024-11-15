@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+// Simple URL validation regex pattern
+const isValidUrl = (url) => {
+  const urlPattern = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z0-9-]+(\/[a-z0-9-_]*)*$/i;
+  return urlPattern.test(url);
+};
+
 const Form = () => {
   const [formData, setFormData] = useState({
     businessName: '',
     domain: '',
-    sslStatus: '',
     email: '',
     phone: '',
     address: '',
@@ -27,16 +32,58 @@ const Form = () => {
     });
   };
 
+  // Normalize the domain (remove any `https://` added by the user)
+  const handleDomainChange = (e) => {
+    let value = e.target.value;
+    // Remove any 'https://' and 'http://'
+    value = value.replace(/^https?:\/\//, '').replace(/^www\./, '');
+    setFormData({
+      ...formData,
+      domain: value,
+    });
+  };
+
+  // Validate input data before sending to backend
+  const validateInputs = () => {
+    if (!formData.businessName || !formData.domain || !isValidUrl(formData.domain)) {
+      setError('Please provide a valid business name and domain.');
+      return false;
+    }
+    if (formData.email && !/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(formData.email)) {
+      setError('Please provide a valid email address.');
+      return false;
+    }
+    if (formData.phone && formData.phone.length< 10) {
+      setError('Please provide a valid phone number.');
+      return false;
+    }
+    if (formData.facebookUrl && !isValidUrl(formData.facebookUrl)) {
+      setError('Please provide a valid Facebook URL.');
+      return false;
+    }
+    if (formData.instagramUrl && !isValidUrl(formData.instagramUrl)) {
+      setError('Please provide a valid Instagram URL.');
+      return false;
+    }
+    return true;
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
+    // Validate inputs before making the API call
+    if (!validateInputs()) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await axios.post('http://localhost:5000/analyze', formData);
       setResponse(res.data);
-      console.log('response is ',res.data)
+      console.log('response is ', res.data);
     } catch (err) {
       setError('Something went wrong, please try again later!');
     } finally {
@@ -49,14 +96,17 @@ const Form = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 " id='form'>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4" id="form">
       <form onSubmit={handleSubmit} className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-md space-y-6">
         <h2 className="text-4xl font-bold text-gray-800 text-center">See Your Business Credibility</h2>
 
         {/* Input Fields */}
-        {['businessName', 'domain', 'sslStatus', 'email', 'phone', 'address', 'facebookUrl', 'instagramUrl', 'hashtags'].map((field) => (
+        {['businessName', 'email', 'phone', 'address', 'facebookUrl', 'instagramUrl', 'hashtags'].map((field) => (
           <div key={field} className="space-y-1">
-            <label className="block text-gray-700 capitalize">{field.replace(/([A-Z])/g, ' $1')}</label>
+            <label className="block text-gray-700 capitalize">
+              {field.replace(/([A-Z])/g, ' $1')}
+              {field === 'email' && <span className="text-sm text-gray-500">(Optional)</span>}
+            </label>
             <input
               type={field === 'email' ? 'email' : field === 'phone' ? 'tel' : 'text'}
               name={field}
@@ -68,6 +118,28 @@ const Form = () => {
             />
           </div>
         ))}
+
+        {/* Domain Input with Split for https:// */}
+        <div className="space-y-1">
+          <label className="block text-gray-700 capitalize">Domain (e.g., domainname.com)</label>
+          <div className="flex">
+            <input
+              type="text"
+              value="https://"
+              disabled
+              className="w-1/6 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-gray-500"
+            />
+            <input
+              type="text"
+              name="domain"
+              value={formData.domain}
+              onChange={handleDomainChange}
+              className="w-5/6 px-4 py-2 border border-gray-300 rounded-r-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your domain (e.g., domainname.com)"
+              required
+            />
+          </div>
+        </div>
 
         <button
           type="submit"
@@ -95,9 +167,9 @@ const Form = () => {
               {response?.analysis || 'No analysis found'}
             </p>
             <p
-              className={`mt-2 text-xl font-bold ${response?.legitimacy === "scam" ? "text-red-600" : "text-green-600"}`}
+              className={`mt-2 text-xl font-bold ${response?.legitimacy === 'scam' ? 'text-red-600' : 'text-green-600'}`}
             >
-              {response?.legitimacy === "scam" ? "SCAM" : "LEGITIMATE"}
+              {response?.legitimacy === 'scam' ? 'SCAM' : 'LEGITIMATE'}
             </p>
             <button
               onClick={handleCloseModal}
