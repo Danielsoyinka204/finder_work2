@@ -11,7 +11,7 @@ const app = express();
 
 job.start();
 
-// Initialize OpenAI client
+
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -64,16 +64,16 @@ app.post("/analyze", async (req, res) => {
     if (response && response.choices && response.choices.length > 0) {
       const analysis = response.choices[0].message.content;
 
-      // Attempt to extract the score from OpenAI's response
-      const credibilityScore = extractScore(analysis) || 0;  // Default to 0 if no valid score is found
+    
+      const credibilityScore = extractScore(analysis) || 0;  
 
-      // Determine legitimacy based on credibility score
+     
       let legitimacy = "legitimate";
       if (credibilityScore < 40) {
         legitimacy = "scam";
       }
 
-      // Update the analysis based on the score and legitimacy
+      
       const updatedAnalysis = `${analysis} \n\nScore: ${credibilityScore}\nCredibility Score: ${credibilityScore}\nCredibility Status: ${legitimacy}`;
 
       res.json({
@@ -90,11 +90,10 @@ app.post("/analyze", async (req, res) => {
   }
 });
 
-// Helper function to extract credibility score from OpenAI's response
+
 function extractScore(analysis) {
-  // Adjust the regex to be more flexible, looking for phrases like "credibility score: 85"
-  const match = analysis.match(/credibility score[:\s]*?(\d+)/i);  // Allow for spaces or colons
-  return match ? parseInt(match[1], 10) : 0; // Default to 0 if no score found
+  const match = analysis.match(/credibility score[:\s]*?(\d+)/i); 
+  return match ? parseInt(match[1], 10) : 0; 
 }
 
 if (process.env.ENV === "production") {
