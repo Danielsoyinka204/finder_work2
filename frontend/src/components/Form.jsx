@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-// Simple URL validation regex pattern
 const isValidUrl = (url) => {
   const urlPattern = /^(https?:\/\/)?([a-z0-9-]+\.)+[a-z]{2,}(:\d+)?(\/.*)?$/i;
   return urlPattern.test(url);
@@ -79,11 +78,11 @@ const Form = () => {
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/analyze', formData);
+      const res = await axios.post('/analyze', formData);
       setResponse(res.data);
       console.log('response is ', res.data);
     } catch (err) {
-      setError('Something went wrong, please try again later!');
+      setError(err.error || 'Something went wrong, please try again later!');
     } finally {
       setLoading(false);
     }

@@ -21,6 +21,7 @@ app.use(express.json());
 app.use(cors());
 
 app.post("/analyze", async (req, res) => {
+  console.log('hit');
   try {
     const {
       businessName,
