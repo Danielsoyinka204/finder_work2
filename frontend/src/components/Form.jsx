@@ -22,7 +22,6 @@ const Form = () => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
 
-  // Handle form data changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -33,7 +32,6 @@ const Form = () => {
 
   const handleDomainChange = (e) => {
     let value = e.target.value;
-
     value = value.replace(/^https?:\/\//, '').replace(/^www\./, '');
     setFormData({
       ...formData,
@@ -50,7 +48,7 @@ const Form = () => {
       setError('Please provide a valid email address.');
       return false;
     }
-    if (formData.phone && formData.phone.length< 10) {
+    if (formData.phone && formData.phone.length < 10) {
       setError('Please provide a valid phone number.');
       return false;
     }
@@ -65,28 +63,68 @@ const Form = () => {
     return true;
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
-
-   
-    if (!validateInputs()) {
-      setLoading(false);
+    if (!validateInputs()) return;
+  
+    const now = Date.now();
+    const lastRequest = localStorage.getItem('lastRequest');
+    if (lastRequest && now - parseInt(lastRequest, 10) < 30000) {
+      setError('Please wait 30 seconds before submitting again.');
       return;
     }
-
+  
+    const storedData = JSON.parse(localStorage.getItem('responses') || '{}');
+    const cachedResponse = storedData[formData.domain];
+  
+    // Check if cached response exists and is within the expiry time
+    if (cachedResponse && now - cachedResponse.timestamp < 40000) {
+      setResponse(cachedResponse.data);
+      return;
+    }
+  
+    // Clean up expired responses
+    const cleanedData = Object.entries(storedData).reduce((acc, [key, value]) => {
+      if (now - value.timestamp < 40000) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+    localStorage.setItem('responses', JSON.stringify(cleanedData));
+  
+    setLoading(true);
+  
     try {
       const res = await axios.post('/analyze', formData);
-      setResponse(res.data);
-      console.log('response is ', res.data);
+      const newResponse = res.data;
+      setResponse(newResponse);
+  
+      // Save new response with timestamp
+      const updatedData = {
+        ...cleanedData,
+        [formData.domain]: { data: newResponse, timestamp: now },
+      };
+      localStorage.setItem('responses', JSON.stringify(updatedData));
+      localStorage.setItem('lastRequest', now.toString());
+  
+      setFormData({
+        businessName: '',
+        domain: '',
+        email: '',
+        phone: '',
+        address: '',
+        facebookUrl: '',
+        instagramUrl: '',
+        hashtags: '',
+      });
     } catch (err) {
-      setError(err.error || 'Something went wrong, please try again later!');
+      setError(err.error || 'Something went wrong, please try again.');
     } finally {
       setLoading(false);
     }
   };
+  
 
   const handleCloseModal = () => {
     setResponse(null);
@@ -97,7 +135,6 @@ const Form = () => {
       <form onSubmit={handleSubmit} className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-md space-y-6">
         <h2 className="text-4xl font-bold text-gray-800 text-center">See Your Business Credibility</h2>
 
-        {/* Input Fields */}
         {['businessName', 'email', 'phone', 'address', 'facebookUrl', 'instagramUrl', 'hashtags'].map((field) => (
           <div key={field} className="space-y-1">
             <label className="block text-gray-700 capitalize">
@@ -115,7 +152,6 @@ const Form = () => {
             />
           </div>
         ))}
-
 
         <div className="space-y-1">
           <label className="block text-gray-700 capitalize">Domain (e.g., domainname.com)</label>
@@ -160,11 +196,11 @@ const Form = () => {
             <p className="mt-4 text-lg text-gray-700">
               {response?.score ? `Score: ${response.score}` : 'No score available'}
             </p>
-            <p className="mt-2 text-gray-600">
-              {response?.analysis || 'No analysis found'}
-            </p>
+            <p className="mt-2 text-gray-600">{response?.analysis || 'No analysis found'}</p>
             <p
-              className={`mt-2 text-xl font-bold ${response?.legitimacy === 'scam' ? 'text-red-600' : 'text-green-600'}`}
+              className={`mt-2 text-xl font-bold ${
+                response?.legitimacy === 'scam' ? 'text-red-600' : 'text-green-600'
+              }`}
             >
               {response?.legitimacy === 'scam' ? 'SCAM' : 'LEGITIMATE'}
             </p>
