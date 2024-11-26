@@ -5,7 +5,7 @@ import App from './App.jsx'
 
 
 
-localStorage.removeItem('responses');
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
