@@ -8,6 +8,41 @@ const About = () => {
           Business Credibility Evaluation System
         </h1>
 
+
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold text-red-600 mb-4">Scam</h2>
+          <p className="text-gray-600 leading-relaxed">
+            Scam is any deceptive or fraudulent activity designed to cheat players, including rigged games where odds are manipulated, non-payment of winnings, or fake casinos created to steal deposits.
+          </p>
+          <p className="text-gray-600 leading-relaxed mt-4">
+            Scammers may also use unrealistic bonus terms to prevent players from withdrawing funds or engage in phishing attacks to steal personal information. These practices undermine the fairness and integrity of online gambling, leaving players at a significant disadvantage and often resulting in financial loss or identity theft.
+          </p>
+          <h3 className="text-xl font-semibold text-gray-700 mt-6">How to Avoid Scams?</h3>
+          <ul className="list-disc list-inside text-gray-600 mt-4">
+            <li>Choose Licensed and Regulated Casinos</li>
+            <li>Check for SSL Encryption</li>
+            <li>Read Reviews and Ratings</li>
+            <li>Understand Terms and Conditions</li>
+            <li>Avoid Too-Good-to-Be-True Offers</li>
+            <li>Use Secure Payment Methods</li>
+            <li>Verify Contact Information</li>
+            <li>Watch for Red Flags</li>
+          </ul>
+        </section>
+
+        <section className="mb-8">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Overview</h2>
+          <p className="text-gray-600 leading-relaxed">
+            This system assesses the credibility of a business by leveraging API integrations and user-provided data. It operates in three comprehensive stages:
+          </p>
+          <ul className="list-disc list-inside text-gray-600 mt-4">
+            <li>Data Collection</li>
+            <li>Analysis and Scoring</li>
+            <li>Visualization</li>
+          </ul>
+        </section>
+
+
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-gray-700 mb-4">Overview</h2>
           <p className="text-gray-600 leading-relaxed">
