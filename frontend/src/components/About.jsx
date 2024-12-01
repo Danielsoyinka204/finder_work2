@@ -5,7 +5,7 @@ const About = () => {
     <div className="min-h-screen bg-gray-100 py-10 px-4 md:px-10">
       <div className="max-w-7xl mx-auto bg-white shadow-lg rounded-lg p-6 md:p-10">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6 text-center">
-          Business Credibility Evaluation System
+        Search-Scam Evaluation System
         </h1>
 
 
