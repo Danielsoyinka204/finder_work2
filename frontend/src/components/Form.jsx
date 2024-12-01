@@ -38,7 +38,7 @@ const InputField = ({
 
 const removeStarsAndHashtags = (text) => {
   if (!text) return "";
-  return text.replace(/[*#]/g, ""); // Remove all '*' and '#' characters
+  return text.replace(/Credibility Score/, "Scam Analysis").replace(/[*#]/g, "");// Remove all '*' and '#' characters
 };
 
 const Modal = ({ response, onClose }) => {
@@ -67,7 +67,7 @@ const Modal = ({ response, onClose }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-2xl font-semibold text-gray-800">
-          Credibility Score
+          Scam Analysis
         </h3>
         <p className="mt-4 text-lg text-gray-700">
           {score ? `Score: ${score}` : "No score available"}
@@ -83,7 +83,7 @@ const Modal = ({ response, onClose }) => {
         <p
           className={`mt-2 text-xl font-bold ${
             legitimacy === "scam" ||
-            legitimacy === "Be cautious, potential red flags exist"
+            legitimacy === "Be cautious, potential Scam"
               ? "text-red-600"
               : "text-green-600"
           }`}
@@ -270,7 +270,7 @@ const Form = () => {
         className="w-full max-w-2xl bg-white p-8 rounded-lg shadow-md space-y-6"
       >
         <h2 className="text-3xl font-bold text-gray-800 text-center">
-          Business Credibility Check
+         Scam Analysis
         </h2>
         <InputField
           label="Business Name"
@@ -320,7 +320,7 @@ const Form = () => {
           className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
           disabled={loading}
         >
-          {loading ? "Processing..." : "Check Credibility"}
+          {loading ? "Analyzing..." : "Analyze"}
         </button>
         {error && (
           <div className="mt-6 p-4 bg-red-100 text-red-800 rounded-md">

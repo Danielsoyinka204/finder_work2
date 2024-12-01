@@ -5,7 +5,7 @@ const Hero = () => {
   return (
     <div className='w-full h-[50vh] bg-gray-100' >
         <div className='max-w-5xl mx-auto flex flex-col items-center justify-center h-full gap-10' >
-            <h1 className='text-6xl font-bold text-center' >Find Your Business Credibility</h1>
+            <h1 className='text-6xl font-bold text-center' >SearchScam</h1>
             <p className='text-center text-gray-500 text-xl font-bold' >Find reviews by real people</p>
 
 

@@ -87,6 +87,7 @@ const About = () => {
           <p className="text-gray-600 leading-relaxed">
             The backend processes the collected data through OpenAI’s GPT-4o Model to analyze and deliver results:
           </p>
+          <img src="/table.jpeg" className="mx-auto my-2" />
           <ul className="list-disc list-inside text-gray-600 mt-4">
             <li>
               <strong>Credibility Score (1–100):</strong> Based on factors like review consistency, domain reliability, and social media engagement.

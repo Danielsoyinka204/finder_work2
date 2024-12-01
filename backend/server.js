@@ -131,7 +131,7 @@ app.post("/analyze", async (req, res) => {
       if (credibilityScore < 20) {
         legitimacy = "scam";
       } else if (credibilityScore < 40) {
-        legitimacy = "Be cautious, potential red flags exist";
+        legitimacy = "Be cautious, potential Scam";
       } else if (credibilityScore < 60) {
         legitimacy = "Neutral, insufficient evidence to strongly support or discredit";
       } else if (credibilityScore < 80) {

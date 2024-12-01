@@ -7,7 +7,7 @@ const Navbar = () => {
         <div className='max-w-5xl mx-auto flex items-center justify-between' >
             <h3  className='text-3xl font-bold' >
               <Link to='/'  className='border-none outline-none' >
-              <img src='/header.jpeg' alt='logo' className='w-20 h-20 rounded-full border-none outline-none' />
+              <img src='/newlogo.jpeg' alt='logo' className='w-20 h-20 rounded-full border-none outline-none' />
               </Link>
             </h3>
 
